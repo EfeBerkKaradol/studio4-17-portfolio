@@ -1,7 +1,8 @@
 .footer {
-  background-color: var(--color-dark);
-  color: var(--color-white);
+  background-color: var(--color-cream-soft);
+  color: var(--color-text-dark);
   padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-cream-dark);
 }
 
 .footerContainer {
@@ -26,8 +27,7 @@
 }
 
 .brandDesc {
-  color: var(--color-text-light);
-  opacity: 0.7;
+  color: var(--color-text-muted);
   font-size: 0.875rem;
   max-width: 250px;
   margin-bottom: var(--space-md);
@@ -45,13 +45,13 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--color-white);
+  border: 1px solid var(--color-cream-dark);
+  color: var(--color-text-dark);
   transition: all var(--transition-fast);
 }
 
 .socialIcon:hover {
-  background-color: var(--color-white);
+  background-color: var(--color-cream-dark);
   color: var(--color-dark);
 }
 
@@ -68,16 +68,15 @@
   gap: 0.75rem;
 }
 
-.footerLinks a, 
+.footerLinks a,
 .footerLinks li {
-  color: var(--color-text-light);
-  opacity: 0.7;
+  color: var(--color-text-muted);
   font-size: 0.875rem;
-  transition: opacity var(--transition-fast);
+  transition: color var(--transition-fast);
 }
 
 .footerLinks a:hover {
-  opacity: 1;
+  color: var(--color-text-dark);
 }
 
 .contactList {
@@ -90,13 +89,12 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--color-text-light);
-  opacity: 0.7;
+  color: var(--color-text-muted);
   font-size: 0.875rem;
 }
 
 .footerBottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--color-cream-dark);
   padding: var(--space-md) 0;
 }
 
@@ -105,8 +103,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.75rem;
-  color: var(--color-text-light);
-  opacity: 0.6;
+  color: var(--color-text-muted);
 }
 
 .legalLinks {

@@ -3,10 +3,9 @@
 }
 
 .hero {
-  background-color: var(--color-dark);
-  color: var(--color-white);
+  background-color: var(--color-cream-soft);
+  color: var(--color-text-dark);
   padding: 6rem 0;
-  text-align: center;
 }
 
 .hero h1 {
@@ -15,10 +14,9 @@
 }
 
 .hero p {
-  opacity: 0.7;
+  color: var(--color-text-muted);
   font-size: 1.125rem;
   max-width: 600px;
-  margin: 0 auto;
 }
 
 .grid {

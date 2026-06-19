@@ -26,16 +26,18 @@ export default function ProjectsPage({ searchParams }) {
           </div>
         </div>
 
-        <div className="container section-padding">
-          <div className={styles.grid}>
-            {displayedProjects.map(project => (
-              <ProjectCard key={project.id} {...project} />
-            ))}
+        <section className="section-padding">
+          <div className="container">
+            <div className={styles.grid}>
+              {displayedProjects.map(project => (
+                <ProjectCard key={project.id} {...project} />
+              ))}
+            </div>
+            {displayedProjects.length === 0 && (
+              <p style={{ textAlign: 'center', marginTop: '4rem' }}>Bu kategoride proje bulunamadı.</p>
+            )}
           </div>
-          {displayedProjects.length === 0 && (
-            <p style={{ textAlign: 'center', marginTop: '4rem' }}>Bu kategoride proje bulunamadı.</p>
-          )}
-        </div>
+        </section>
       </main>
       <Footer />
     </>

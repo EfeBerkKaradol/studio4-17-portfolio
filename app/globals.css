@@ -17,7 +17,8 @@
   --color-accent: #c4a47c; /* Soft gold/brass accent */
   
   /* Layout */
-  --container-width: 1280px;
+  --container-width: 1440px;
+  --container-padding: clamp(2rem, 5vw, 6rem);
   --header-height: 80px;
   
   /* Spacing */
@@ -107,7 +108,8 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   max-width: var(--container-width);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
 }
 
 /* Global Button Styles */
@@ -137,25 +139,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-secondary {
-  background-color: var(--color-dark);
-  color: var(--color-cream);
-  border: 1px solid var(--color-dark);
+  background-color: var(--color-cream-dark);
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-cream-dark);
 }
 
 .btn-secondary:hover {
-  background-color: transparent;
-  color: var(--color-dark);
+  background-color: var(--color-dark);
+  color: var(--color-cream);
 }
 
 .btn-outline {
   background-color: transparent;
-  color: var(--color-dark);
-  border: 1px solid var(--color-dark);
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-cream-dark);
 }
 
 .btn-outline:hover {
-  background-color: var(--color-dark);
-  color: var(--color-cream);
+  background-color: var(--color-cream-dark);
+  color: var(--color-text-dark);
 }
 
 /* Section Spacing */

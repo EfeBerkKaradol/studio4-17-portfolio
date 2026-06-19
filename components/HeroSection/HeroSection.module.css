@@ -1,234 +1,153 @@
 .hero {
-  position: relative;
   min-height: 100vh;
-  background-color: var(--color-dark);
-  color: var(--color-white);
+  background-color: var(--color-cream);
+  color: var(--color-text-dark);
   display: flex;
   align-items: center;
   padding-top: var(--header-height);
-  overflow: hidden;
-}
-
-.heroBackground {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 30% 50%, rgba(18,18,18,0.4) 0%, rgba(18,18,18,0.95) 100%);
-  z-index: 1;
+  padding-bottom: 4rem;
 }
 
 .heroContent {
-  position: relative;
-  z-index: 10;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2.5fr;
   gap: 4rem;
   align-items: center;
 }
 
 .textContent {
-  max-width: 600px;
+  display: flex;
+  flex-direction: column;
 }
 
-.subtitle {
-  display: inline-block;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: 1.5rem;
-  position: relative;
-  padding-left: 3rem;
+.number {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
 }
 
-.subtitle::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 2rem;
+.divider {
+  width: 100%;
   height: 1px;
-  background-color: var(--color-accent);
+  background-color: var(--color-cream-dark);
+  margin-bottom: 2rem;
 }
 
 .title {
-  font-size: clamp(3.5rem, 5vw, 5.5rem);
-  line-height: 1.1;
-  margin-bottom: 2rem;
-  letter-spacing: -0.02em;
-}
-
-.highlight {
-  color: var(--color-cream);
-  font-style: italic;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  color: var(--color-dark);
+  margin-bottom: 1.5rem;
+  line-height: 1.15;
 }
 
 .description {
-  font-size: 1.125rem;
-  color: var(--color-text-light);
-  opacity: 0.8;
-  margin-bottom: 3rem;
-  max-width: 480px;
+  color: var(--color-text-muted);
   line-height: 1.7;
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
 }
 
-.actions {
-  display: flex;
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--color-cream-dark);
+  color: var(--color-text-dark);
+  padding: 0.875rem 1.75rem;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  width: fit-content;
+  transition: all var(--transition-normal);
+}
+
+.link:hover {
+  background-color: var(--color-cream-soft);
+  padding-right: 1.5rem;
+  padding-left: 2rem;
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 1.5rem;
+  height: 550px;
 }
 
-.heroImageWrapper {
+.imageItem {
   position: relative;
-  height: 600px;
-  width: 100%;
-}
-
-.imageReveal {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-  z-index: 2;
+  background-color: var(--color-cream-dark);
 }
 
-.heroImage {
-  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+.imageItem::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+  z-index: 1;
 }
 
-.heroImageWrapper:hover .heroImage {
+.mainImage {
+  grid-row: 1 / 3;
+}
+
+.image {
+  transition: transform var(--transition-slow);
+}
+
+.imageItem:hover .image {
   transform: scale(1.05);
 }
 
-.imageAccent {
+.imageLabel {
   position: absolute;
-  bottom: -20px;
-  left: -20px;
-  width: 100%;
-  height: 100%;
-  border: 1px solid rgba(255,255,255,0.1);
-  z-index: 1;
-  border-radius: 4px;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  color: var(--color-white);
+  font-size: 0.875rem;
+  z-index: 2;
+  font-weight: 500;
 }
 
-.scrollIndicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.scrollText {
-  font-size: 0.625rem;
-  letter-spacing: 0.2em;
-  color: rgba(255,255,255,0.5);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-
-.scrollLine {
-  width: 1px;
-  height: 60px;
-  background-color: rgba(255,255,255,0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.scrollLine::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-white);
-  animation: scrollAnim 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-}
-
-@keyframes scrollAnim {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-
-@media (max-width: 1200px) {
-  .scrollIndicator {
-    display: none; /* Kenar boşluğu daraldığında yazıyı gizle */
-  }
-}
-
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
   .heroContent {
     grid-template-columns: 1fr;
-    text-align: left; /* Metinleri sola hizalı tut */
     gap: 3rem;
   }
 
-  .textContent {
-    margin: 0;
-    max-width: 100%;
-  }
-
-  .subtitle {
-    padding-left: 0;
-  }
-  
-  .subtitle::before {
-    display: none;
-  }
-
-  .actions {
-    justify-content: flex-start; /* Butonları sola hizalı tut */
-  }
-
-  .heroImageWrapper {
-    height: 400px;
+  .imageGrid {
+    height: 450px;
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .hero {
     padding-top: calc(var(--header-height) + 2rem);
     padding-bottom: 2rem;
   }
 
+  .imageGrid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: auto;
+  }
+
+  .mainImage {
+    grid-row: 1 / 2;
+    aspect-ratio: 16/10;
+  }
+
+  .subImage {
+    aspect-ratio: 16/10;
+  }
+
   .title {
-    font-size: 2.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .description {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .heroImageWrapper {
-    height: 300px;
-  }
-  
-  .actions {
-    flex-direction: column; /* Telefondaki butonları alt alta diz */
-    width: 100%;
-  }
-
-  .actions .btn {
-    width: 100%; /* Butonları tam genişlik yap */
+    font-size: 2.25rem;
   }
 }

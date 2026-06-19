@@ -32,10 +32,10 @@ export default function Footer() {
           <h4 className={styles.footerTitle}>HIZLI LİNKLER</h4>
           <ul>
             <li><Link href="/">Ana Sayfa</Link></li>
-            <li><Link href="#hizmetler">Uzmanlıklar</Link></li>
-            <li><Link href="#projeler">Projeler</Link></li>
-            <li><Link href="#surec">Süreç</Link></li>
-            <li><Link href="#hakkimda">Hakkımda</Link></li>
+            <li><Link href="/portfolyo">Portfolyo</Link></li>
+            <li><Link href="/uzmanliklar">Uzmanlıklar</Link></li>
+            <li><Link href="/surec">Süreç</Link></li>
+            <li><Link href="/hakkimda">Hakkımda</Link></li>
           </ul>
         </div>
 

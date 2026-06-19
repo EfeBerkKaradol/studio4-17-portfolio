@@ -36,7 +36,7 @@ export default function ProcessTimeline() {
 
   return (
     <section className={styles.processSection}>
-      <div className={`container ${styles.container}`}>
+      <div className={`container ${styles.inner}`}>
         <div className={styles.header}>
           <span className={styles.subtitle}>SÜREÇ</span>
           <h2 className={`${styles.title} font-serif`}>Fikirden gerçeğe,<br/>adım adım.</h2>

@@ -3,55 +3,50 @@ import Link from 'next/link';
 import styles from './HeroSection.module.css';
 
 export default function HeroSection() {
+  const images = [
+    { src: "/images/project-model.png", label: "Konsept Çalışma Maketi" },
+    { src: "/images/project-interior.png", label: "İç Mekan Detayı" },
+    { src: "/images/project-urban.png", label: "Vaziyet Planı" }
+  ];
+
   return (
     <section className={styles.hero}>
-      <div className={styles.heroBackground}>
-        {/* Placeholder image, later will use generated image */}
-        <div className={styles.overlay}></div>
-      </div>
-      
       <div className={`container ${styles.heroContent}`}>
         <div className={styles.textContent}>
-          <span className={styles.subtitle}>MİMARLIK & TASARIM PORTFOLYOSU</span>
+          <span className={styles.number}>02</span>
+          <div className={styles.divider}></div>
           <h1 className={`${styles.title} font-serif`}>
-            Fikirleri <br />
-            <span className={styles.highlight}>Mekanlara</span><br />
-            Dönüştürüyoruz.
+            Maketler &amp;<br />Teknik Çizimler
           </h1>
           <p className={styles.description}>
-            Mimarlık öğrencisi olarak edindiğim deneyimler, 
-            katıldığım projeler ve tasarıma dair kişisel bakış açım.
-            Modern, sürdürülebilir ve insan odaklı mekanlar tasarlıyorum.
+            Tasarımların 3 boyutlu algısını güçlendiren
+            çalışma maketleri ve projenin dilini anlatan
+            kavramsal eskizler, teknik detay çözümleri.
           </p>
-          <div className={styles.actions}>
-            <Link href="#projeler" className="btn btn-primary">
-              Projeleri İncele
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </Link>
-            <Link href="#hakkimda" className="btn btn-outline" style={{ color: 'white', borderColor: 'rgba(255,255,255,0.3)' }}>
-              Hakkımda
-            </Link>
-          </div>
+          <Link href="/projeler?kategori=maket" className={styles.link}>
+            Tümünü Gör
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </Link>
         </div>
 
-        <div className={styles.heroImageWrapper}>
-          <div className={styles.imageReveal}>
-            <Image 
-              src="/images/hero.png" 
-              alt="Mimari Maket" 
-              fill
-              priority
-              style={{ objectFit: 'cover' }}
-              className={styles.heroImage}
-            />
-          </div>
-          <div className={styles.imageAccent}></div>
+        <div className={styles.imageGrid}>
+          {images.map((img, index) => (
+            <div key={index} className={`${styles.imageItem} ${index === 0 ? styles.mainImage : styles.subImage}`}>
+              <Image
+                src={img.src}
+                alt={img.label}
+                fill
+                priority={index === 0}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectFit: 'cover' }}
+                className={styles.image}
+              />
+              {img.label && (
+                <div className={styles.imageLabel}>{img.label}</div>
+              )}
+            </div>
+          ))}
         </div>
-      </div>
-      
-      <div className={styles.scrollIndicator}>
-        <span className={styles.scrollText}>AŞAĞI KAYDIR</span>
-        <div className={styles.scrollLine}></div>
       </div>
     </section>
   );

@@ -1,104 +1,108 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { projects } from '@/data/projects';
+import { mainNav } from '@/lib/site';
 import styles from './Header.module.css';
 
-const navItems = [
-  { label: 'Ana Sayfa', href: '/' },
-  {
-    label: 'Portfolyo',
-    href: '/portfolyo',
-    children: projects.map(p => ({ label: p.title, href: `/projeler/${p.id}` }))
-  },
-  { label: 'Süreç', href: '/surec' },
-  { label: 'Fiyat Hesapla', href: '/fiyat-hesaplama' },
-  { label: 'Hakkımda', href: '/hakkimda' },
-  { label: 'İletişim', href: '/iletisim' },
-];
-
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
   const pathname = usePathname();
-  const dropdownRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Sayfa değişince menüyü kapat
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
+    setOpen(false);
+  }
+
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpenDropdown(null);
-      }
+    if (!open) return;
+    const onKey = (e) => e.key === 'Escape' && setOpen(false);
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [open]);
 
-  useEffect(() => {
-    setMobileMenuOpen(false);
-    setOpenDropdown(null);
-  }, [pathname]);
+  const isActive = (href) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
   return (
-    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
-      <div className={`container ${styles.headerContainer}`}>
-        <Link href="/" className={styles.logo}>
-          <span className="font-serif">STUDIO</span>4.17
+    <header className={`${styles.header} ${scrolled || open ? styles.solid : ''}`}>
+      <div className={`container ${styles.bar}`}>
+        <Link href="/" className={styles.logo} aria-label="Studio 4.17 ana sayfa">
+          <span className="font-serif">STUDIO</span>
+          <span className={styles.logoNum}>4.17</span>
         </Link>
 
-        <nav className={`${styles.nav} ${mobileMenuOpen ? styles.navOpen : ''}`} ref={dropdownRef}>
-          <ul className={styles.navList}>
-            {navItems.map((item) => (
-              <li key={item.href} className={styles.navItem}>
-                {item.children ? (
-                  <>
-                    <button
-                      className={`${styles.navLink} ${pathname.startsWith(item.href) || pathname.startsWith('/projeler') ? styles.active : ''}`}
-                      onClick={() => setOpenDropdown(openDropdown === item.href ? null : item.href)}
-                    >
-                      {item.label}
-                      <svg className={`${styles.chevron} ${openDropdown === item.href ? styles.chevronOpen : ''}`} width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </button>
-                    <div className={`${styles.dropdown} ${openDropdown === item.href ? styles.dropdownOpen : ''}`}>
-                      <Link href={item.href} className={styles.dropdownLink}>
-                        Tüm Projeler
-                      </Link>
-                      <div className={styles.dropdownDivider}></div>
-                      {item.children.map((child) => (
-                        <Link key={child.href} href={child.href} className={styles.dropdownLink}>
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={`${styles.navLink} ${pathname === item.href ? styles.active : ''}`}
-                  >
-                    {item.label}
-                  </Link>
-                )}
+        <nav aria-label="Ana menü" className={styles.desktopNav}>
+          <ul>
+            {mainNav.slice(1).map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className={`${styles.link} ${isActive(item.href) ? styles.active : ''}`}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
 
-        <button
-          className={styles.mobileToggle}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Menüyü aç/kapat"
-        >
-          <span className={`${styles.hamburger} ${mobileMenuOpen ? styles.hamburgerActive : ''}`}></span>
-        </button>
+        <div className={styles.actions}>
+          <Link href="/teklif-al" className={`btn btn-accent ${styles.cta}`}>
+            Teklif Al
+          </Link>
+          <button
+            type="button"
+            className={styles.toggle}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="visually-hidden">{open ? 'Menüyü kapat' : 'Menüyü aç'}</span>
+            <span className={`${styles.burger} ${open ? styles.burgerOpen : ''}`} aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-menu" className={styles.mobileMenu} hidden={!open}>
+        <nav aria-label="Mobil menü" className="container">
+          <ul>
+            {mainNav.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className={`${styles.mobileLink} ${isActive(item.href) ? styles.active : ''}`}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/fiyat-hesaplama" className={styles.mobileLink}>
+                3D Baskı Fiyat Tahmini
+              </Link>
+            </li>
+          </ul>
+          <Link href="/teklif-al" className="btn btn-accent btn-block">
+            Teklif Al
+          </Link>
+        </nav>
       </div>
     </header>
   );

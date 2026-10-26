@@ -1,0 +1,291 @@
+/* Sayfa girişi */
+.intro {
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.intro h1 {
+  max-width: 20ch;
+  margin-bottom: 1rem;
+}
+
+/* Hizmet ızgarası */
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.serviceItem {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.serviceLink {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.75rem 1.5rem;
+  transition: background-color var(--transition-fast);
+}
+
+.serviceLink:hover {
+  background: var(--surface);
+}
+
+.serviceLink:hover .more {
+  color: var(--accent-ink);
+}
+
+.serviceNum {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-ink);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.serviceTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.serviceLink p {
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.more {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+/* Proje kartı */
+.projectCard {
+  height: 100%;
+}
+
+.projectLink {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.projectLink:hover {
+  border-color: var(--line-strong);
+}
+
+.projectLink:hover img {
+  transform: scale(1.02);
+}
+
+.projectImage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.projectImage img {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.projectBody {
+  padding: 1.1rem 1.25rem 1.4rem;
+}
+
+.projectBody h3 {
+  margin: 0.7rem 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.projectBody p {
+  font-size: 0.92rem;
+}
+
+/* Süreç adımları */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  counter-reset: step;
+}
+
+.step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--ink);
+}
+
+.stepNum {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.step h3 {
+  font-size: 1.02rem;
+  margin-bottom: 0.3rem;
+}
+
+.step p {
+  font-size: 0.93rem;
+}
+
+/* SSS */
+.faq {
+  border-top: 1px solid var(--line);
+}
+
+.faqItem {
+  border-bottom: 1px solid var(--line);
+}
+
+.faqItem summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 1.1rem 2.5rem 1.1rem 0;
+  font-weight: 600;
+  position: relative;
+  min-height: 48px;
+}
+
+.faqItem summary::-webkit-details-marker {
+  display: none;
+}
+
+.faqItem summary::after {
+  content: '+';
+  position: absolute;
+  right: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--accent-ink);
+}
+
+.faqItem[open] summary::after {
+  content: '–';
+}
+
+.faqItem p {
+  padding: 0 0 1.25rem;
+  max-width: 70ch;
+}
+
+/* Liste */
+.checklist li {
+  position: relative;
+  padding-left: 1.6rem;
+  margin-bottom: 0.6rem;
+  color: var(--ink-2);
+}
+
+.checklist li::before {
+  content: '';
+  position: absolute;
+  left: 0.15rem;
+  top: 0.55em;
+  width: 0.7rem;
+  height: 0.38rem;
+  border-left: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(-45deg);
+}
+
+.xlist li::before {
+  content: '×';
+  border: none;
+  transform: none;
+  top: -0.05em;
+  left: 0.15rem;
+  width: auto;
+  height: auto;
+  color: var(--ink-3);
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+/* CTA bandı */
+.ctaBand {
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
+  padding: 4rem 0;
+}
+
+.ctaInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.ctaInner h2 {
+  margin-bottom: 0.5rem;
+}
+
+.ctaInner p {
+  max-width: 56ch;
+}
+
+/* Yorumlar */
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.quotes blockquote {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.quotes footer {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--ink-3);
+}
+
+@media (max-width: 960px) {
+  .serviceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .serviceGrid {
+    grid-template-columns: 1fr;
+  }
+  .serviceLink {
+    padding: 1.4rem 1.1rem;
+  }
+  .serviceNum {
+    margin-bottom: 0.75rem;
+  }
+  .ctaBand {
+    padding: 3rem 0;
+  }
+}

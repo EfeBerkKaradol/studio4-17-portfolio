@@ -1,50 +1,41 @@
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import ProjectCard from '@/components/ProjectCard/ProjectCard';
-import { projects } from '@/data/projects';
-import styles from './page.module.css';
+import { Suspense } from 'react';
+import { PageIntro, CtaBand } from '@/components/Blocks/Blocks';
+import Breadcrumbs from '@/components/Seo/Breadcrumbs';
+import PortfolioGrid from '@/components/Portfolio/PortfolioGrid';
+import { projects, portfolioCategories } from '@/data/projects';
+import { pageMeta } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Portfolyo | Studio4.17',
-  description: 'Mimari projeler, iç mekan tasarımları ve kentsel ölçek çalışmalarından seçkiler.',
-};
+export const metadata = pageMeta({
+  title: 'Portfolyo | Mimari Maket, 3D Baskı ve Render Çalışmaları | Studio 4.17',
+  description:
+    'Studio 4.17 portfolyosu: mimari maket, 3D baskı, görselleştirme ve modelleme çalışmaları. Her çalışmada türü (müşteri işi, akademik, örnek) açıkça belirtilir.',
+  path: '/portfolyo',
+});
 
 export default function PortfolioPage() {
-  const featuredProjects = projects.filter(p => p.featured);
-  const otherProjects = projects.filter(p => !p.featured);
-
+  // Yalnızca en az bir projesi olan kategoriler filtrede gösterilir
+  const categories = portfolioCategories.filter((c) => projects.some((p) => p.categories.includes(c.id)));
   return (
     <>
-      <Header />
-      <main className={styles.main}>
-        <div className={styles.hero}>
-          <div className="container">
-            <span className={styles.subtitle}>PORTFOLYO</span>
-            <h1 className="font-serif">Öne Çıkan Projeler</h1>
-            <p className={styles.heroDesc}>
-              Öğrencilik dönemimde ve stajlarımda yer aldığım, mimari tasarım,
-              iç mekan ve kentsel ölçekteki projelerden seçkiler.
-            </p>
-          </div>
+      <PageIntro
+        eyebrow="Portfolyo"
+        title="Çalışmalar"
+        lead="Her çalışmanın türünü açıkça belirtiyoruz: müşteri işi, akademik çalışma, kişisel çalışma veya örnek içerik."
+      >
+        <Breadcrumbs items={[{ label: 'Portfolyo', href: '/portfolyo' }]} />
+      </PageIntro>
+      <section className="section-tight">
+        <div className="container">
+          <p className="notice" style={{ marginBottom: '2rem' }}>
+            <strong>Not:</strong> Bu sayfadaki çalışmalar şu an <strong>örnek içeriktir</strong> ve görseller temsilidir
+            (yapay zekâ ile üretilmiştir). Gerçek üretim fotoğrafları ve vaka çalışmaları eklendikçe güncellenecektir.
+          </p>
+          <Suspense fallback={null}>
+            <PortfolioGrid projects={projects} categories={categories} />
+          </Suspense>
         </div>
-
-        <section className="section-padding">
-          <div className="container">
-            <div className={styles.featuredGrid}>
-              {featuredProjects.map(project => (
-                <ProjectCard key={project.id} {...project} />
-              ))}
-            </div>
-
-            <div className={styles.projectsGrid}>
-              {otherProjects.map(project => (
-                <ProjectCard key={project.id} {...project} />
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
+      </section>
+      <CtaBand title="Benzer bir iş mi planlıyorsunuz?" location="portfolio_index" />
     </>
   );
 }

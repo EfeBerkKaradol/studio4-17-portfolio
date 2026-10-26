@@ -1,0 +1,22 @@
+.bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .bar {
+    display: flex;
+    gap: 0.5rem;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    padding: 0.6rem var(--container-padding) calc(0.6rem + env(safe-area-inset-bottom));
+    background: rgba(253, 251, 248, 0.97);
+    border-top: 1px solid var(--line);
+  }
+  .item {
+    flex: 1;
+    min-height: 48px;
+  }
+}

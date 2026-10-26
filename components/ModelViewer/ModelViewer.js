@@ -12,7 +12,9 @@ export default function ModelViewer({ geometry, fileName }) {
   const controlsRef = useRef(null);
   const frameRef = useRef(null);
   const [isWireframe, setIsWireframe] = useState(false);
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(
+    () => typeof window === 'undefined' || !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
 
   useEffect(() => {
     if (!containerRef.current || !geometry) return;
@@ -52,7 +54,7 @@ export default function ModelViewer({ geometry, fileName }) {
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.08;
-      controls.autoRotate = true;
+      controls.autoRotate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       controls.autoRotateSpeed = 1.5;
       controls.minDistance = 10;
       controls.maxDistance = 2000;
@@ -131,15 +133,17 @@ export default function ModelViewer({ geometry, fileName }) {
 
     init();
 
+    const container = containerRef.current;
     return () => {
       cleanup = true;
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
-      if (rendererRef.current && containerRef.current) {
-        containerRef.current.removeChild(rendererRef.current.domElement);
+      if (rendererRef.current) {
+        rendererRef.current.domElement.remove();
         rendererRef.current.dispose();
+        rendererRef.current = null;
       }
-      if (containerRef.current?._resizeHandler) {
-        window.removeEventListener('resize', containerRef.current._resizeHandler);
+      if (container?._resizeHandler) {
+        window.removeEventListener('resize', container._resizeHandler);
       }
     };
   }, [geometry]);
@@ -174,14 +178,20 @@ export default function ModelViewer({ geometry, fileName }) {
         <button
           className={`${styles.controlBtn} ${isWireframe ? styles.controlActive : ''}`}
           onClick={() => setIsWireframe(!isWireframe)}
-          title="Wireframe"
+          title="Tel kafes görünümü"
+          aria-label="Tel kafes görünümü"
+          aria-pressed={isWireframe}
+          type="button"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
         </button>
         <button
           className={`${styles.controlBtn} ${autoRotate ? styles.controlActive : ''}`}
           onClick={() => setAutoRotate(!autoRotate)}
-          title="Otomatik Döndürme"
+          title="Otomatik döndürme"
+          aria-label="Otomatik döndürme"
+          aria-pressed={autoRotate}
+          type="button"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
         </button>

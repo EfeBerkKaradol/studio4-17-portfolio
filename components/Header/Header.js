@@ -42,7 +42,7 @@ export default function Header() {
     <header className={`${styles.header} ${scrolled || open ? styles.solid : ''}`}>
       <div className={`container ${styles.bar}`}>
         <Link href="/" className={styles.logo} aria-label="Studio 4.17 ana sayfa">
-          <span className="font-serif">STUDIO</span>
+          <span className={styles.logoWord}>Studio</span>
           <span className={styles.logoNum}>4.17</span>
         </Link>
 
@@ -93,10 +93,17 @@ export default function Header() {
                 </Link>
               </li>
             ))}
+          </ul>
+          <p className={styles.mobileGroup}>Kısayollar</p>
+          <ul className={styles.mobileSecondary}>
             <li>
-              <Link href="/fiyat-hesaplama" className={styles.mobileLink}>
-                3D Baskı Fiyat Tahmini
-              </Link>
+              <Link href="/ogrenciler">Öğrenciler için</Link>
+            </li>
+            <li>
+              <Link href="/ofisler">Ofisler için</Link>
+            </li>
+            <li>
+              <Link href="/fiyat-hesaplama">3D baskı fiyat tahmini</Link>
             </li>
           </ul>
           <Link href="/teklif-al" className="btn btn-accent btn-block">

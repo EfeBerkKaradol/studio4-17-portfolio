@@ -35,7 +35,7 @@ export default function ModelViewer({ geometry, fileName }) {
       const height = container.clientHeight;
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xf4efeb);
+      scene.background = new THREE.Color(0xf7f6f2);
       sceneRef.current = scene;
 
       const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
@@ -76,11 +76,11 @@ export default function ModelViewer({ geometry, fileName }) {
       fillLight.position.set(0, -3, 5);
       scene.add(fillLight);
 
-      const gridHelper = new THREE.GridHelper(400, 40, 0xd5c8b8, 0xeae2d9);
+      const gridHelper = new THREE.GridHelper(400, 40, 0xcfccc2, 0xe5e3dc);
       scene.add(gridHelper);
 
       const material = new THREE.MeshStandardMaterial({
-        color: 0xd5c8b8,
+        color: 0xe4e0d6,
         roughness: 0.4,
         metalness: 0.1,
         flatShading: false,
@@ -102,7 +102,7 @@ export default function ModelViewer({ geometry, fileName }) {
       meshRef.current = mesh;
 
       const edgesGeo = new THREE.EdgesGeometry(geometry, 30);
-      const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xc4a47c, transparent: true, opacity: 0.15 });
+      const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x52634f, transparent: true, opacity: 0.25 });
       const edges = new THREE.LineSegments(edgesGeo, edgesMaterial);
       edges.position.copy(mesh.position);
       scene.add(edges);

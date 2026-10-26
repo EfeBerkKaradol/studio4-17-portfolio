@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ServiceGrid, ProjectCard, ProcessSteps, Faq, CtaBand, Testimonials } from '@/components/Blocks/Blocks';
+import { SectionHeading, ServiceIndex, ProjectCard, ProcessStages, Faq, CtaBand, Testimonials, CheckList } from '@/components/Blocks/Blocks';
 import { WhatsAppLink } from '@/components/Contact/ContactLinks';
-import { projects } from '@/data/projects';
+import { projects, isSample } from '@/data/projects';
 import { pageMeta } from '@/lib/seo';
 import styles from './home.module.css';
 
@@ -14,33 +14,21 @@ export const metadata = pageMeta({
 });
 
 const workflow = [
-  { title: 'Proje bilgilerini gönderin', text: 'Çizim, model veya referanslarınızı, ölçeği ve teslim tarihini paylaşın.' },
-  { title: 'Değerlendirme ve teklif', text: 'Uygulanabilirliği inceler, kapsam, fiyat ve süreyi yazılı olarak iletiriz.' },
-  { title: 'Onay', text: 'Kapsam, fiyat ve teslim koşullarını onayladığınızda üretim planlanır.' },
-  { title: 'Üretim ve kontrol', text: 'Üretim sonrası ölçü ve yüzey kontrolü yapılır; gerekirse ara fotoğraf paylaşılır.' },
-  { title: 'Teslim', text: 'Elden teslim veya uygun ambalajla gönderim.' },
+  { title: 'Proje bilgileri', text: 'Çizim, model veya referanslarınızı, ölçeği ve teslim tarihini paylaşırsınız.' },
+  { title: 'Fizibilite ve teklif', text: 'Dosyaları inceler; kapsam, fiyat ve süreyi yazılı olarak iletiriz.' },
+  { title: 'Onay', text: 'Kapsam, fiyat ve teslim koşulları onaylanınca üretim planlanır.' },
+  { title: 'Üretim ve kontrol', text: 'Üretim sonrası ölçü ve yüzey kontrolü; gerekirse ara fotoğraf.' },
+  { title: 'Teslim', text: 'Elden teslim, gönderim ya da dijital işlerde dosya teslimi.' },
 ];
 
-const reasons = [
-  {
-    title: 'Mimarlık bilen bir üretim ortağı',
-    text: 'Ölçek, kesit ve sunum mantığını biliyoruz; çiziminizi okurken neyin anlatılmak istendiğini sorarız.',
-  },
-  {
-    title: 'Önce yazılı teklif, sonra üretim',
-    text: 'Kapsam, fiyat ve teslim tarihi yazılı olarak netleşmeden üretime başlamayız.',
-  },
-  {
-    title: 'Dürüst tahmin',
-    text: 'Otomatik hesaplama yalnızca bir ön tahmindir; kesin fiyatı dosyanızı inceledikten sonra veririz.',
-  },
-  {
-    title: 'Dosyalarınız size aittir',
-    text: 'Dosyalar yalnızca teklif ve üretim için kullanılır; izniniz olmadan paylaşılmaz veya yayınlanmaz.',
-  },
+const principles = [
+  { title: 'Mimarlık bilen bir üretim ortağı', text: 'Ölçek, kesit ve sunum mantığını biliyoruz; çiziminizi okurken neyin anlatılmak istendiğini sorarız.' },
+  { title: 'Önce yazılı teklif', text: 'Kapsam, fiyat ve teslim tarihi yazılı olarak netleşmeden üretime başlamayız.' },
+  { title: 'Dürüst tahmin', text: 'Otomatik hesaplama bir ön tahmindir; kesin fiyatı dosyanızı inceledikten sonra veririz.' },
+  { title: 'Gizlilik', text: 'Dosyalar yalnızca teklif ve üretim için kullanılır; izniniz olmadan paylaşılmaz veya yayınlanmaz.' },
 ];
 
-const pricingFaq = [
+const faq = [
   {
     q: 'Fiyatı neler belirler?',
     a: 'Ölçek ve boyut, geometrinin karmaşıklığı, malzeme ve yüzey kalitesi, üretim yöntemi, adet, montaj/son işlem ve teslim süresi.',
@@ -53,11 +41,16 @@ const pricingFaq = [
     q: 'Teklif almak ücretli mi, beni bağlar mı?',
     a: 'Teklif talebi ücretsizdir ve sizi bağlamaz. Üretim, yazılı teklifi onaylamanızla başlar.',
   },
+  {
+    q: 'Jüri tarihime yetişir mi?',
+    a: 'Dosyalarınızı gördükten sonra yetişip yetişmeyeceğini açıkça söyleriz. Yetişmeyecek bir tarihi kabul etmeyiz.',
+  },
 ];
 
 export default function Home() {
   const featured = projects.filter((p) => p.featured).slice(0, 3);
-  const selected = featured.length >= 3 ? featured : projects.slice(0, 3);
+  const selected = featured.length === 3 ? featured : projects.slice(0, 3);
+  const allSamples = selected.every(isSample);
 
   return (
     <>
@@ -65,18 +58,19 @@ export default function Home() {
       <section className={styles.hero}>
         <div className={`container ${styles.heroGrid}`}>
           <div className={styles.heroText}>
-            <span className="eyebrow">İstanbul · Mimari maket · 3D baskı</span>
-            <h1 className={styles.heroTitle}>Mimari maket, 3D baskı ve dijital tasarım desteği</h1>
+            <span className="eyebrow">Mimari maket · 3D baskı · Dijital tasarım — İstanbul</span>
+            <h1 className={`display ${styles.heroTitle}`}>
+              Fikirden makete, <em>projeden üretime.</em>
+            </h1>
             <p className="lead">
-              İstanbul’da mimarlık öğrencileri ve tasarım ekipleri için çizim ve modellerinizi jüriye, sunuma ve üretime
-              hazır fiziksel ve dijital çıktılara dönüştürüyoruz.
+              İstanbul’da mimarlık öğrencileri ve tasarım ekipleri için mimari maket, 3D baskı ve dijital tasarım desteği.
             </p>
             <div className={`btn-row ${styles.heroActions}`}>
-              <Link href="/teklif-al" className="btn btn-accent">
-                Teklif Al
+              <Link href="/teklif-al" className="btn btn-accent arrow">
+                Projem İçin Teklif Al
               </Link>
               <Link href="/portfolyo" className="btn btn-outline">
-                Portfolyoyu İncele
+                İşleri İncele
               </Link>
             </div>
             <WhatsAppLink
@@ -84,77 +78,112 @@ export default function Home() {
               location="home_hero"
               className={styles.heroWa}
             >
-              Hızlı soru için WhatsApp’tan yazın
+              Kısa bir soru mu var? WhatsApp’tan yazın
             </WhatsAppLink>
           </div>
           <figure className={styles.heroFigure}>
-            <div className={styles.heroImage}>
+            <div className={`frame ${styles.heroImage}`}>
               <Image
                 src="/images/project-model.png"
                 alt="Ağaçlar ve insan figürleriyle peyzajlı, çok katlı beyaz bir mimari maket"
                 fill
                 priority
-                sizes="(max-width: 900px) 100vw, 45vw"
+                sizes="(max-width: 900px) 100vw, 46vw"
               />
             </div>
-            <figcaption className="muted small">Temsili görsel — gerçek üretim fotoğraflarıyla değiştirilecek.</figcaption>
+            <figcaption className="caption">Temsili görsel — gerçek üretim fotoğraflarıyla değiştirilecek.</figcaption>
           </figure>
+        </div>
+        <div className="container">
+          <ul className={styles.facts}>
+            <li>
+              <span className="meta">Kimin için</span>
+              <span>Mimarlık öğrencileri ve tasarım ofisleri</span>
+            </li>
+            <li>
+              <span className="meta">Dosyalar</span>
+              <span>PDF, DWG, 3DM, SKP, STL, OBJ, 3MF</span>
+            </li>
+            <li>
+              <span className="meta">Çalışma şekli</span>
+              <span>Üretim öncesi yazılı teklif</span>
+            </li>
+            <li>
+              <span className="meta">Konum</span>
+              <span>İstanbul · elden teslim veya gönderim</span>
+            </li>
+          </ul>
         </div>
       </section>
 
       {/* B. Hizmetler */}
       <section className="section" aria-labelledby="hizmetler">
         <div className="container">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Hizmetler</span>
-              <h2 id="hizmetler">Ne yapıyoruz?</h2>
-            </div>
-            <Link href="/hizmetler" className="text-link">
-              Tüm hizmetler
-            </Link>
-          </div>
-          <ServiceGrid />
+          <SectionHeading
+            id="hizmetler"
+            eyebrow="Hizmetler"
+            title="Maketten render’a, tek stüdyo."
+            intro="Her hizmetin sayfasında ne göndermeniz gerektiğini, neyin teslim edildiğini ve fiyatı neyin belirlediğini açıkça yazdık."
+            action={
+              <Link href="/hizmetler" className="text-link">
+                Tüm hizmetler
+              </Link>
+            }
+          />
+          <ServiceIndex />
         </div>
       </section>
 
       {/* C. İki müşteri yolu */}
       <section className="section section-alt" aria-labelledby="kimin-icin">
         <div className="container">
-          <span className="eyebrow">Kimin için?</span>
-          <h2 id="kimin-icin" className={styles.pathsTitle}>
-            Öğrenci jürisinden ofis sunumuna
-          </h2>
+          <SectionHeading id="kimin-icin" eyebrow="İki yol, tek stüdyo" title="Öğrenci jürisinden ofis sunumuna." />
           <div className={styles.paths}>
             <article className={styles.path}>
-              <h3>Mimarlık ve iç mimarlık öğrencileri</h3>
+              <span className="meta">01 — Öğrenciler</span>
+              <h3 className={styles.pathTitle}>Mimarlık ve iç mimarlık öğrencileri</h3>
               <p>
-                Jüri ve teslim haftaları için maket, 3D baskı parçaları, görselleştirme ve teknik destek. Tasarım sizin;
-                üretimi ve teknik hazırlığı birlikte planlarız.
+                Jüri ve teslim haftaları için maket, 3D baskı, görselleştirme ve teknik destek. Tasarım sizin; üretimi ve
+                teknik hazırlığı birlikte planlarız.
               </p>
-              <ul className={styles.pathList}>
-                <li>Ölçekli maket ve maket parçaları</li>
-                <li>3D baskı ve dosya hazırlığı</li>
-                <li>Render ve pafta düzeni desteği</li>
-              </ul>
-              <Link href="/ogrenciler" className="btn btn-outline">
-                Öğrenciler için
-              </Link>
+              <h4 className={styles.pathSub}>Gönderebilecekleriniz</h4>
+              <CheckList items={['Plan, kesit, görünüş (PDF/DWG)', 'Rhino, SketchUp veya STL/OBJ model', 'Referans görseller ve eskizler']} />
+              <h4 className={styles.pathSub}>Süre ve bütçe</h4>
+              <p className="small">
+                Jüri tarihinizi ilk mesajda yazın; yetişmeyecek bir işi kabul etmeyiz. Bütçenizi belirtirseniz malzeme ve detay
+                seviyesini ona göre öneririz.
+              </p>
+              <div className="btn-row">
+                <Link href="/teklif-al?musteri=ogrenci" className="btn btn-accent arrow">
+                  Öğrenci olarak teklif al
+                </Link>
+                <Link href="/ogrenciler" className="text-link">
+                  Öğrenciler için
+                </Link>
+              </div>
             </article>
             <article className={styles.path}>
-              <h3>Mimarlık ofisleri ve tasarım ekipleri</h3>
+              <span className="meta">02 — Ofisler</span>
+              <h3 className={styles.pathTitle}>Mimarlık ofisleri ve tasarım ekipleri</h3>
               <p>
-                Yarışma ve müşteri sunumları, prototipler ve tekrar eden üretim işleri için yazılı kapsamla çalışan bir
-                üretim ortağı.
+                Yarışma ve müşteri sunumları, prototipler ve tekrar eden üretim işleri için yazılı kapsamla çalışan bir üretim
+                ortağı.
               </p>
-              <ul className={styles.pathList}>
-                <li>Sunum ve satış ofisi maketleri</li>
-                <li>Ürün ve detay prototipleri</li>
-                <li>Görselleştirme ve düzenli üretim desteği</li>
-              </ul>
-              <Link href="/ofisler" className="btn btn-outline">
-                Ofisler için
-              </Link>
+              <h4 className={styles.pathSub}>Teklif için gerekenler</h4>
+              <CheckList items={['Proje dosyaları ve hedef ölçek', 'Sunum / teslim tarihi ve yeri', 'Adet, tekrar ve gizlilik gereksinimleri']} />
+              <h4 className={styles.pathSub}>Çalışma koşulları</h4>
+              <p className="small">
+                Kapsam, teknik değerlendirme, teslim ve fatura koşulları yazılı teklifte netleşir. Düzenli işlerde ortak bir dosya
+                ve onay düzeni kurarız.
+              </p>
+              <div className="btn-row">
+                <Link href="/teklif-al?musteri=profesyonel&hizmet=ofislere-ozel-uretim" className="btn btn-primary arrow">
+                  Ofis olarak teklif al
+                </Link>
+                <Link href="/ofisler" className="text-link">
+                  Ofisler için
+                </Link>
+              </div>
             </article>
           </div>
         </div>
@@ -163,52 +192,58 @@ export default function Home() {
       {/* D. Seçili işler */}
       <section className="section" aria-labelledby="secili-isler">
         <div className="container">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Portfolyo</span>
-              <h2 id="secili-isler">Seçili çalışmalar</h2>
+          <SectionHeading
+            id="secili-isler"
+            eyebrow="Portfolyo"
+            title="Seçili çalışmalar"
+            action={
+              <Link href="/portfolyo" className="text-link">
+                Tüm portfolyo
+              </Link>
+            }
+          />
+          {allSamples && (
+            <p className="notice" style={{ marginBottom: '2rem' }}>
+              Portfolyo şu an örnek içerik ve temsili görseller içeriyor; gerçek çalışmalar eklendikçe güncellenecek.
+            </p>
+          )}
+          <div className={styles.work}>
+            <ProjectCard project={selected[0]} large />
+            <div className={styles.workSide}>
+              {selected.slice(1).map((p) => (
+                <ProjectCard key={p.slug} project={p} />
+              ))}
             </div>
-            <Link href="/portfolyo" className="text-link">
-              Tüm portfolyo
-            </Link>
-          </div>
-          <p className="notice" style={{ marginBottom: '1.5rem' }}>
-            Portfolyo şu an örnek içerik ve temsili görseller içeriyor; gerçek çalışmalar eklendikçe güncellenecek.
-          </p>
-          <div className={styles.projects}>
-            {selected.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
-            ))}
           </div>
         </div>
       </section>
 
-      {/* E. Nasıl çalışır */}
-      <section className="section section-alt" aria-labelledby="nasil-calisir">
+      {/* E. Süreç */}
+      <section className="section section-alt" aria-labelledby="surec">
         <div className="container">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Süreç</span>
-              <h2 id="nasil-calisir">Nasıl çalışıyoruz?</h2>
-            </div>
-            <Link href="/surec" className="text-link">
-              Süreç ve koşullar
-            </Link>
-          </div>
-          <ProcessSteps steps={workflow} />
+          <SectionHeading
+            id="surec"
+            eyebrow="Süreç"
+            title="Teklif talebinden teslime."
+            intro="Dijital işlerde (render, modelleme) üretim yerine önizleme ve revizyon aşamaları yer alır."
+            action={
+              <Link href="/surec" className="text-link">
+                Süreç ve koşullar
+              </Link>
+            }
+          />
+          <ProcessStages steps={workflow} />
         </div>
       </section>
 
-      {/* F. Neden Studio 4.17 */}
-      <section className="section" aria-labelledby="neden">
+      {/* F. Güven */}
+      <section className="section" aria-labelledby="ilkeler">
         <div className="container">
-          <span className="eyebrow">Neden Studio 4.17</span>
-          <h2 id="neden" className={styles.pathsTitle}>
-            Çalışma ilkelerimiz
-          </h2>
-          <div className={styles.reasons}>
-            {reasons.map((r) => (
+          <SectionHeading id="ilkeler" eyebrow="Çalışma ilkeleri" title="Neye güvenebilirsiniz?" />
+          <div className={styles.principles}>
+            {principles.map((r, i) => (
               <div key={r.title}>
+                <span className={styles.principleNum}>{String(i + 1).padStart(2, '0')}</span>
                 <h3>{r.title}</h3>
                 <p>{r.text}</p>
               </div>
@@ -219,31 +254,26 @@ export default function Home() {
 
       <Testimonials />
 
-      {/* G. Fiyat ve SSS */}
-      <section className="section section-alt" aria-labelledby="fiyat">
-        <div className={`container ${styles.pricing}`}>
+      <section className="section section-alt" aria-labelledby="sss">
+        <div className={`container ${styles.faqGrid}`}>
           <div>
-            <span className="eyebrow">Fiyatlandırma</span>
-            <h2 id="fiyat">Fiyat nasıl belirlenir?</h2>
-            <p>
-              Her proje farklı olduğu için sabit fiyat listesi yerine dosyanızı inceleyip yazılı teklif veriyoruz. 3D baskı
-              için dosyanızı yükleyip hacme dayalı bir ön tahmin görebilirsiniz.
+            <span className="eyebrow">Fiyat ve sorular</span>
+            <h2 id="sss">Sabit liste yerine yazılı teklif.</h2>
+            <p className={styles.faqIntro}>
+              Her proje farklı olduğu için dosyanızı inceleyip yazılı teklif veriyoruz. 3D baskı için dosyanızı yükleyip hacme
+              dayalı bir ön tahmin görebilirsiniz.
             </p>
-            <div className="btn-row" style={{ marginTop: '1.5rem' }}>
+            <div className="btn-row">
               <Link href="/fiyat-hesaplama" className="btn btn-outline">
                 3D baskı ön tahmini
               </Link>
-              <Link href="/teklif-al" className="btn btn-primary">
-                Teklif iste
-              </Link>
             </div>
           </div>
-          <Faq items={pricingFaq} />
+          <Faq items={faq} />
         </div>
       </section>
 
-      {/* H. Son çağrı */}
-      <CtaBand location="home_final" />
+      <CtaBand title="Projenizi konuşalım." quoteLabel="Projem İçin Teklif Al" location="home_final" />
     </>
   );
 }

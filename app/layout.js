@@ -1,4 +1,4 @@
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Instrument_Sans, Instrument_Serif } from 'next/font/google';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import MobileActionBar from '@/components/Contact/MobileActionBar';
@@ -8,12 +8,14 @@ import { site, socialLinks } from '@/lib/site';
 import './globals.css';
 
 // latin-ext: ğ, ş, ı, İ gibi Türkçe karakterler için gerekli
-const inter = Inter({ subsets: ['latin', 'latin-ext'], variable: '--font-inter', display: 'swap' });
-const playfair = Playfair_Display({
+// Instrument Sans: gövde, form, menü · Instrument Serif: büyük başlıklar ve logo
+const sans = Instrument_Sans({ subsets: ['latin', 'latin-ext'], variable: '--font-sans', display: 'swap' });
+const serif = Instrument_Serif({
   subsets: ['latin', 'latin-ext'],
-  variable: '--font-playfair',
+  variable: '--font-serif',
   display: 'swap',
-  weight: ['500'],
+  weight: '400',
+  style: ['normal', 'italic'],
 });
 
 export const metadata = {
@@ -36,12 +38,12 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: '#f6f3ee',
+  themeColor: '#f7f6f2',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="tr" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="tr" className={`${sans.variable} ${serif.variable}`}>
       <body>
         <a href="#icerik" className="skip-link">
           İçeriğe geç

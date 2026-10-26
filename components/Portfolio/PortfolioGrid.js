@@ -30,7 +30,10 @@ export default function PortfolioGrid({ projects, categories }) {
             aria-pressed={active === c.id}
             onClick={() => select(c.id)}
           >
-            {c.label}
+            {c.label}{' '}
+            <span className={styles.count}>
+              {c.id === 'tumu' ? projects.length : projects.filter((p) => p.categories.includes(c.id)).length}
+            </span>
           </button>
         ))}
       </div>

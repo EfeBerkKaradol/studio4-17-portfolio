@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { projects, getProject, projectKinds, portfolioCategories, isSample } from '@/data/projects';
+import { projects, getProject, portfolioCategories, isSample } from '@/data/projects';
 import { getService } from '@/data/services';
-import { CtaBand } from '@/components/Blocks/Blocks';
+import { CtaBand, ProjectMeta, ProjectCard, SectionHeading } from '@/components/Blocks/Blocks';
 import Breadcrumbs from '@/components/Seo/Breadcrumbs';
 import { pageMeta } from '@/lib/seo';
 import styles from './project.module.css';
@@ -36,6 +36,15 @@ export default async function ProjectPage({ params }) {
   const service = getService(p.service);
   const cats = p.categories.map((id) => portfolioCategories.find((c) => c.id === id)?.label).filter(Boolean);
   const quoteHref = `/teklif-al?hizmet=${p.service}`;
+  const others = projects.filter((x) => x.slug !== p.slug).slice(0, 3);
+
+  // Yalnızca bilinen bölümler gösterilir
+  const sections = [
+    ['Kısa tanım', p.brief],
+    ['Hedef', p.goal],
+    ['Studio 4.17’nin katkısı', p.contribution],
+    ['Sonuç ve teslim', p.result],
+  ].filter(([, v]) => v);
 
   return (
     <>
@@ -47,108 +56,98 @@ export default async function ProjectPage({ params }) {
               { label: p.title, href: `/portfolyo/${p.slug}` },
             ]}
           />
-          <div className={styles.tags}>
-            <span className={`tag ${isSample(p) ? 'tag-sample' : ''}`}>{projectKinds[p.kind]}</span>
-            {cats.map((c) => (
-              <span key={c} className="tag">
-                {c}
-              </span>
-            ))}
+          <div className={styles.head}>
+            <div>
+              <p className="meta">{cats.join(' · ')}</p>
+              <h1 className={styles.title}>{p.title}</h1>
+              <p className="lead">{p.summary}</p>
+            </div>
+            {isSample(p) && (
+              <p className="notice">
+                <strong>Örnek içerik.</strong> Görsel yapay zekâ ile üretilmiş temsili bir görseldir; Studio 4.17’nin tamamlanmış
+                bir işi değildir.
+              </p>
+            )}
           </div>
-          <h1 className={styles.title}>{p.title}</h1>
-          <p className="lead">{p.summary}</p>
-          {isSample(p) && (
-            <p className="notice" style={{ marginTop: '1.5rem' }}>
-              Bu sayfa <strong>örnek içeriktir</strong>. Görsel yapay zekâ ile üretilmiş temsili bir görseldir; Studio 4.17’nin
-              tamamlanmış bir işi değildir.
-            </p>
-          )}
         </div>
       </section>
 
-      <section className="section-tight">
+      <section className="section-tight" style={{ paddingTop: 0 }}>
         <div className="container">
-          <figure className={styles.cover}>
-            <div className={styles.coverImage}>
-              <Image src={p.image} alt={p.imageAlt} fill priority sizes="(max-width: 1280px) 100vw, 1200px" />
+          <figure>
+            <div className={`frame ${styles.cover}`}>
+              <Image src={p.image} alt={p.imageAlt} fill priority sizes="(max-width: 1320px) 100vw, 1220px" />
             </div>
-            <figcaption className="muted small">{p.gallery[0]?.caption}</figcaption>
+            {p.gallery[0]?.caption && <figcaption className="caption">{p.gallery[0].caption}</figcaption>}
           </figure>
 
           <div className={styles.body}>
-            <div className={styles.main}>
-              <h2>Kısa tanım</h2>
-              <p>{p.brief}</p>
-              <h2>Hedef</h2>
-              <p>{p.goal}</p>
-              <h2>Studio 4.17’nin katkısı</h2>
-              <p>{p.contribution}</p>
-              <h2>Süreç</h2>
-              <ol className={styles.process}>
-                {p.process.map((s) => (
-                  <li key={s}>{s}</li>
-                ))}
-              </ol>
-              <h2>Sonuç</h2>
-              <p>{p.result}</p>
-            </div>
             <aside className={styles.aside}>
-              <dl>
-                <div>
-                  <dt>Tür</dt>
-                  <dd>{projectKinds[p.kind]}</dd>
-                </div>
-                {p.client && (
-                  <div>
-                    <dt>Müşteri</dt>
-                    <dd>{p.client}</dd>
-                  </div>
-                )}
-                {p.year && (
-                  <div>
-                    <dt>Yıl</dt>
-                    <dd>{p.year}</dd>
-                  </div>
-                )}
-                <div>
-                  <dt>Malzeme ve teknik</dt>
-                  <dd>{p.materials}</dd>
-                </div>
-                {service && (
-                  <div>
-                    <dt>İlgili hizmet</dt>
-                    <dd>
-                      <Link href={`/hizmetler/${service.slug}`} className="text-link">
-                        {service.title}
-                      </Link>
-                    </dd>
-                  </div>
-                )}
-              </dl>
-              <Link href={quoteHref} className="btn btn-accent btn-block">
+              <ProjectMeta project={p} />
+              {service && (
+                <p className={styles.serviceLink}>
+                  <span className="meta">İlgili hizmet</span>
+                  <Link href={`/hizmetler/${service.slug}`} className="text-link">
+                    {service.title}
+                  </Link>
+                </p>
+              )}
+              <Link href={quoteHref} className="btn btn-accent btn-block arrow">
                 Benzer bir iş için teklif al
               </Link>
             </aside>
+            <div className={styles.main}>
+              {sections.map(([title, text]) => (
+                <section key={title} className={styles.block}>
+                  <h2>{title}</h2>
+                  <p>{text}</p>
+                </section>
+              ))}
+              {p.process.length > 0 && (
+                <section className={styles.block}>
+                  <h2>Süreç</h2>
+                  <ol className={styles.process}>
+                    {p.process.map((s) => (
+                      <li key={s}>{s}</li>
+                    ))}
+                  </ol>
+                </section>
+              )}
+            </div>
           </div>
 
           {p.gallery.length > 1 && (
             <div className={styles.gallery}>
               {p.gallery.slice(1).map((g) => (
                 <figure key={g.src}>
-                  <div className={styles.galleryImage}>
+                  <div className={`frame ${styles.galleryImage}`}>
                     <Image src={g.src} alt={g.alt || g.caption || p.title} fill sizes="(max-width: 700px) 100vw, 50vw" />
                   </div>
-                  {g.caption && <figcaption className="muted small">{g.caption}</figcaption>}
+                  {g.caption && <figcaption className="caption">{g.caption}</figcaption>}
                 </figure>
               ))}
             </div>
           )}
+        </div>
+      </section>
 
-          <p style={{ marginTop: '3rem' }}>
-            <Link href="/portfolyo" className="text-link">
-              ← Tüm çalışmalar
-            </Link>
-          </p>
+      <section className="section-tight section-alt" aria-labelledby="diger">
+        <div className="container">
+          <SectionHeading
+            id="diger"
+            eyebrow="Portfolyo"
+            title="Diğer çalışmalar"
+            action={
+              <Link href="/portfolyo" className="text-link">
+                Tümü
+              </Link>
+            }
+          />
+          <div className={styles.others}>
+            {others.map((o) => (
+              <ProjectCard key={o.slug} project={o} />
+            ))}
+          </div>
         </div>
       </section>
 

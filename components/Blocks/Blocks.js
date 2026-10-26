@@ -1,77 +1,119 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { activeServices } from '@/data/services';
-import { projectKinds, isSample } from '@/data/projects';
+import { projectKinds, isSample, projectMeta } from '@/data/projects';
 import { testimonials } from '@/data/testimonials';
 import { WhatsAppLink } from '@/components/Contact/ContactLinks';
 import styles from './Blocks.module.css';
 
-export function ServiceGrid({ services = activeServices, headingLevel = 3 }) {
+const pad = (n) => String(n).padStart(2, '0');
+
+// Bölüm başlığı: üst etiket + serif başlık + kısa açıklama + sağda bağlantı
+export function SectionHeading({ eyebrow, title, intro, action, id, level = 2 }) {
+  const H = `h${level}`;
+  return (
+    <div className="section-head">
+      <div>
+        {eyebrow && <span className="eyebrow">{eyebrow}</span>}
+        <H id={id}>{title}</H>
+        {intro && <p>{intro}</p>}
+      </div>
+      {action}
+    </div>
+  );
+}
+
+// Editoryal hizmet dizini: numara · başlık · açıklama · küçük görsel
+export function ServiceIndex({ services = activeServices, headingLevel = 3, images = true }) {
   const H = `h${headingLevel}`;
   return (
-    <ul className={styles.serviceGrid}>
+    <ol className={styles.index}>
       {services.map((s, i) => (
-        <li key={s.slug} className={styles.serviceItem}>
-          <Link href={`/hizmetler/${s.slug}`} className={styles.serviceLink}>
-            <span className={styles.serviceNum}>{String(i + 1).padStart(2, '0')}</span>
-            <H className={styles.serviceTitle}>{s.title}</H>
-            <p>{s.short}</p>
-            <span className={styles.more} aria-hidden="true">
-              Ayrıntılar →
+        <li key={s.slug}>
+          <Link href={`/hizmetler/${s.slug}`} className={`${styles.indexRow} ${images ? '' : styles.noImage}`}>
+            <span className={styles.indexNum}>{pad(i + 1)}</span>
+            <H className={styles.indexTitle}>{s.title}</H>
+            <p className={styles.indexText}>{s.short}</p>
+            {images && (
+              <span className={`frame ${styles.indexImage}`} aria-hidden="true">
+                <Image src={s.image} alt="" fill sizes="160px" />
+              </span>
+            )}
+            <span className={styles.indexArrow} aria-hidden="true">
+              →
             </span>
           </Link>
         </li>
       ))}
-    </ul>
+    </ol>
   );
 }
 
-export function ProjectCard({ project, priority = false }) {
+// Eski adla kullanımlar için
+export const ServiceGrid = ServiceIndex;
+
+export function ProjectCard({ project, priority = false, large = false }) {
   return (
-    <article className={styles.projectCard}>
+    <article className={`${styles.project} ${large ? styles.projectLarge : ''}`}>
       <Link href={`/portfolyo/${project.slug}`} className={styles.projectLink}>
-        <div className={styles.projectImage}>
+        <div className={`frame ${styles.projectImage}`}>
           <Image
             src={project.image}
             alt={project.imageAlt}
             fill
             priority={priority}
-            sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
+            sizes={large ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw'}
           />
+          {isSample(project) && <span className={`tag tag-sample ${styles.projectFlag}`}>Örnek içerik</span>}
         </div>
         <div className={styles.projectBody}>
-          <span className={`tag ${isSample(project) ? 'tag-sample' : ''}`}>{projectKinds[project.kind]}</span>
-          <h3>{project.title}</h3>
-          <p>{project.summary}</p>
+          <p className="meta">
+            {project.typeLabel}
+            {!isSample(project) && ` · ${projectKinds[project.kind]}`}
+          </p>
+          <h3 className={styles.projectTitle}>{project.title}</h3>
+          <p className={styles.projectSummary}>{project.summary}</p>
         </div>
       </Link>
     </article>
   );
 }
 
-export function ProcessSteps({ steps }) {
+export function ProjectMeta({ project }) {
   return (
-    <ol className={styles.steps}>
+    <dl className={styles.metaList}>
+      {projectMeta(project).map(([k, v]) => (
+        <div key={k}>
+          <dt>{k}</dt>
+          <dd>{v}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+// Süreç aşamaları: masaüstünde yatay, mobilde dikey
+export function ProcessStages({ steps, compact = false }) {
+  return (
+    <ol className={`${styles.stages} ${compact ? styles.stagesCompact : ''}`}>
       {steps.map((step, i) => (
-        <li key={i} className={styles.step}>
-          <span className={styles.stepNum} aria-hidden="true">
-            {i + 1}
-          </span>
-          <div>
-            {typeof step === 'string' ? (
-              <p>{step}</p>
-            ) : (
-              <>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </>
-            )}
-          </div>
+        <li key={i} className={styles.stage}>
+          <span className={styles.stageNum}>{pad(i + 1)}</span>
+          {typeof step === 'string' ? (
+            <p>{step}</p>
+          ) : (
+            <>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </>
+          )}
         </li>
       ))}
     </ol>
   );
 }
+
+export const ProcessSteps = ProcessStages;
 
 export function Faq({ items }) {
   return (
@@ -97,25 +139,26 @@ export function CheckList({ items, variant }) {
 }
 
 export function CtaBand({
-  title = 'Projenizi konuşalım',
+  title = 'Projenizi konuşalım.',
   text = 'Dosyalarınızı ve teslim tarihinizi gönderin; uygulanabilirliği değerlendirip yazılı teklif hazırlayalım.',
   quoteHref = '/teklif-al',
+  quoteLabel = 'Teklif Al',
   waMessage = 'Merhaba, bir proje için teklif almak istiyorum.',
   location = 'cta_band',
   service,
 }) {
   return (
-    <section className={styles.ctaBand} aria-labelledby={`cta-${location}`}>
+    <section className={styles.cta} aria-labelledby={`cta-${location}`}>
       <div className={`container ${styles.ctaInner}`}>
-        <div>
-          <h2 id={`cta-${location}`}>{title}</h2>
+        <h2 id={`cta-${location}`}>{title}</h2>
+        <div className={styles.ctaSide}>
           <p>{text}</p>
-        </div>
-        <div className="btn-row">
-          <Link href={quoteHref} className="btn btn-accent">
-            Teklif Al
-          </Link>
-          <WhatsAppLink message={waMessage} location={location} service={service} />
+          <div className="btn-row">
+            <Link href={quoteHref} className="btn btn-accent arrow">
+              {quoteLabel}
+            </Link>
+            <WhatsAppLink message={waMessage} location={location} service={service} />
+          </div>
         </div>
       </div>
     </section>
@@ -129,7 +172,7 @@ export function Testimonials({ service }) {
   return (
     <section className="section-tight" aria-labelledby="yorumlar">
       <div className="container">
-        <h2 id="yorumlar">Müşterilerimiz ne diyor?</h2>
+        <SectionHeading eyebrow="Geri bildirim" title="Birlikte çalıştıklarımız" id="yorumlar" />
         <ul className={styles.quotes}>
           {list.map((t) => (
             <li key={t.quote}>
@@ -148,14 +191,21 @@ export function Testimonials({ service }) {
   );
 }
 
-export function PageIntro({ eyebrow, title, lead, children }) {
+// Alt sayfaların giriş bölümü
+export function PageIntro({ eyebrow, title, lead, children, actions, aside }) {
   return (
     <section className={`page-top ${styles.intro}`}>
       <div className="container">
         {children}
-        {eyebrow && <span className="eyebrow">{eyebrow}</span>}
-        <h1>{title}</h1>
-        {lead && <p className="lead">{lead}</p>}
+        <div className={aside ? styles.introGrid : undefined}>
+          <div>
+            {eyebrow && <span className="eyebrow">{eyebrow}</span>}
+            <h1 className={styles.introTitle}>{title}</h1>
+            {lead && <p className="lead">{lead}</p>}
+            {actions && <div className={`btn-row ${styles.introActions}`}>{actions}</div>}
+          </div>
+          {aside}
+        </div>
       </div>
     </section>
   );

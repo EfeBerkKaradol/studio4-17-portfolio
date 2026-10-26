@@ -10,7 +10,7 @@
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-lg);
   padding: 1.1rem 1.25rem;
-  box-shadow: 0 10px 30px rgba(29, 28, 26, 0.12);
+  border-top: 2px solid var(--ink);
 }
 
 .banner p {

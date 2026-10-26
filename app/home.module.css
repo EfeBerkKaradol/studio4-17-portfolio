@@ -1,24 +1,21 @@
 .hero {
-  padding-top: calc(var(--header-height) + 2.5rem);
-  padding-bottom: 3.5rem;
-  border-bottom: 1px solid var(--line);
+  padding-top: calc(var(--header-height) + clamp(1.5rem, 4vw, 3.5rem));
 }
 
 .heroGrid {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: center;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
 }
 
 .heroTitle {
-  font-size: clamp(2.1rem, 5vw, 3.6rem);
-  max-width: 16ch;
-  margin-bottom: 1.25rem;
+  max-width: 12ch;
+  margin-bottom: 1.5rem;
 }
 
 .heroActions {
-  margin-top: 2rem;
+  margin-top: 2.25rem;
 }
 
 .heroWa {
@@ -27,134 +24,188 @@
   gap: 0.5rem;
   margin-top: 1.25rem;
   min-height: 44px;
+  font-size: 0.93rem;
   font-weight: 600;
   color: var(--whatsapp);
   text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.heroFigure figcaption {
-  margin-top: 0.6rem;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 
 .heroImage {
-  position: relative;
-  aspect-ratio: 4 / 3.4;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--surface-2);
+  aspect-ratio: 4 / 4.6;
 }
 
-.heroImage img {
-  object-fit: cover;
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
 }
 
-.pathsTitle {
-  margin-bottom: 2rem;
-  max-width: 24ch;
+.facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.1rem 1rem 1.2rem 0;
+  font-size: 0.93rem;
+  color: var(--ink);
 }
 
+.facts li + li {
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+}
+
+/* Müşteri yolları */
 .paths {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 0;
+  border-top: 1px solid var(--ink);
 }
 
 .path {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 2rem;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  gap: 0.9rem;
+  padding: 2rem clamp(1.25rem, 3vw, 2.5rem) 1rem 0;
 }
 
-.path h3 {
-  font-size: 1.3rem;
-  margin: 0;
+.path + .path {
+  padding-left: clamp(1.25rem, 3vw, 2.5rem);
+  border-left: 1px solid var(--line);
 }
 
-.pathList {
-  flex: 1;
+.pathTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+  line-height: 1.05;
 }
 
-.pathList li {
-  padding: 0.45rem 0;
-  border-bottom: 1px solid var(--line);
-  color: var(--ink-2);
-  font-size: 0.95rem;
+.pathSub {
+  margin-top: 0.6rem;
+  font-size: var(--fs-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--olive-ink);
 }
 
-.projects {
+.path .btn-row,
+.path :global(.btn-row) {
+  margin-top: 1rem;
+}
+
+/* Seçili işler */
+.work {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-.reasons {
+.workSide {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-.reasons > div {
-  border-top: 2px solid var(--ink);
-  padding-top: 1.1rem;
-}
-
-.reasons h3 {
-  margin-bottom: 0.5rem;
-}
-
-.reasons p {
-  font-size: 0.95rem;
-}
-
-.pricing {
+/* İlkeler */
+.principles {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: start;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-.pricing h2 {
+.principleNum {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--clay);
   margin-bottom: 1rem;
 }
 
+.principles h3 {
+  margin-bottom: 0.5rem;
+}
+
+.principles p {
+  font-size: 0.95rem;
+}
+
+/* SSS */
+.faqGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.faqGrid h2 {
+  max-width: 13ch;
+  margin-bottom: 1rem;
+}
+
+.faqIntro {
+  margin-bottom: 1.5rem;
+  max-width: 44ch;
+}
+
 @media (max-width: 1000px) {
-  .reasons {
+  .principles {
     grid-template-columns: 1fr 1fr;
+  }
+  .facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .facts li:nth-child(3) {
+    padding-left: 0;
+    border-left: none;
+  }
+  .facts li:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
   }
 }
 
 @media (max-width: 900px) {
   .heroGrid,
-  .pricing {
+  .faqGrid,
+  .work {
     grid-template-columns: 1fr;
   }
   .heroImage {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 11;
   }
-  .projects {
+  .paths {
+    grid-template-columns: 1fr;
+  }
+  .path + .path {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--line);
+    margin-top: 1.5rem;
+  }
+  .workSide {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-@media (max-width: 640px) {
-  .hero {
-    padding-top: calc(var(--header-height) + 1rem);
-  }
-  .paths,
-  .projects,
-  .reasons {
+@media (max-width: 600px) {
+  .principles,
+  .workSide,
+  .facts {
     grid-template-columns: 1fr;
   }
-  .path {
-    padding: 1.4rem;
+  .facts li,
+  .facts li + li {
+    padding-left: 0;
+    border-left: none;
+  }
+  .facts li + li {
+    border-top: 1px solid var(--line);
   }
   .heroActions :global(.btn) {
-    flex: 1;
+    flex: 1 1 100%;
   }
 }

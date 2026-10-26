@@ -10,10 +10,15 @@ export default function Footer() {
 
   return (
     <footer className={styles.footer}>
+      <div className={`container ${styles.top}`}>
+        <p className={styles.statement}>
+          Fikirden makete, <em>projeden üretime.</em>
+        </p>
+      </div>
       <div className={`container ${styles.grid}`}>
         <div className={styles.brand}>
-          <Link href="/" className={styles.logo}>
-            <span className="font-serif">STUDIO</span> 4.17
+          <Link href="/" className={styles.logo} aria-label="Studio 4.17 ana sayfa">
+            Studio <span>4.17</span>
           </Link>
           <p>{site.tagline}</p>
           <p className={styles.area}>Hizmet bölgesi: {site.serviceArea}</p>

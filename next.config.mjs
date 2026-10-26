@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    formats: ['image/avif', 'image/webp'],
-  },
   async redirects() {
     // Eski adresler yeni yapıya kalıcı olarak yönlendirilir
     return [

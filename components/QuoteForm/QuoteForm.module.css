@@ -1,12 +1,13 @@
 .form {
   background: var(--surface);
   border: 1px solid var(--line);
+  border-top: 2px solid var(--ink);
   border-radius: var(--radius-lg);
   padding: clamp(1.25rem, 3vw, 2.25rem);
 }
 
 .formTitle {
-  font-size: 1.5rem;
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
   margin-bottom: 0.25rem;
 }
 
@@ -256,7 +257,7 @@
 .success {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-left: 4px solid var(--ok);
+  border-top: 2px solid var(--ok);
   border-radius: var(--radius-lg);
   padding: clamp(1.5rem, 3vw, 2.5rem);
 }
